@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atividade Interativa - Alfabeto</title>
+  <style>
+    body {
+      font-family: Helvetica, Arial, sans-serif;
+      background: #f0f8ff;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    .container {
+      background: #fff;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    h1, h2, h3 {
+      color: #333;
+    }
+    input[type="text"] {
+      width: 90%;
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      margin: 10px 5px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .option-button {
+      background: #007bff;
+      color: #fff;
+      width: 100px;
+      margin: 5px;
+    }
+    .option-button:hover {
+      background: #0056b3;
+    }
+    .speak-button {
+      background: #ff9800;
+      color: #fff;
+      margin: 10px;
+      padding: 8px 16px;
+    }
+    .speak-button:hover {
+      background: #e68a00;
+    }
+    .correct {
+      background: #28a745 !important;
+    }
+    .incorrect {
+      background: #dc3545 !important;
+    }
+    #nextButton {
+      background: #17a2b8;
+      color: #fff;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Tela Inicial -->
+  <div id="startScreen" class="container">
+    <h1>Atividade Interativa - Alfabeto</h1>
+    <h2>E.B.M. Vidal Ramos</h2>
+    <label for="nome">Nome do Estudante:</label>
+    <br>
+    <input type="text" id="nome" placeholder="Digite seu nome" />
+    <br><br>
+    <h2>Vídeo Didático</h2>
+    <p>Clique no vídeo para assistir:</p>
+    <!-- Vídeo didático em português com link incorporado -->
+    <iframe
+      width="560"
+      height="315"
+      src="https://www.youtube.com/embed/PabyuB5v-W8"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+    ></iframe>
+    <br /><br />
+    <button id="startButton">Iniciar Atividade</button>
+  </div>
+
+  <!-- Tela do Quiz -->
+  <div id="quizScreen" class="container" style="display: none;">
+    <div id="welcomeMessage"></div>
+    <div id="questionContainer"></div>
+    <div id="feedback"></div>
+    <button id="nextButton">Próxima Pergunta</button>
+    <p id="scoreDisplay">Pontuação: 0</p>
+  </div>
+
+  <script>
+    // Array com as 26 letras – cada objeto contém a letra, a palavra (que inicia com a letra) e um emoji ilustrativo.
+    const questions = [
+      { letter: "A", word: "Abacaxi", emoji: "🍍" },
+      { letter: "B", word: "Bola", emoji: "⚽" },
+      { letter: "C", word: "Cachorro", emoji: "🐶" },
+      { letter: "D", word: "Dinossauro", emoji: "🦖" },
+      { letter: "E", word: "Elefante", emoji: "🐘" },
+      { letter: "F", word: "Flor", emoji: "🌸" },
+      { letter: "G", word: "Gato", emoji: "🐱" },
+      { letter: "H", word: "Helicóptero", emoji: "🚁" },
+      { letter: "I", word: "Ilha", emoji: "🏝️" },
+      { letter: "J", word: "Joaninha", emoji: "🐞" },
+      { letter: "K", word: "Kanguru", emoji: "🦘" },
+      { letter: "L", word: "Leão", emoji: "🦁" },
+      { letter: "M", word: "Macaco", emoji: "🐵" },
+      { letter: "N", word: "Navio", emoji: "🚢" },
+      { letter: "O", word: "Ovelha", emoji: "🐑" },
+      { letter: "P", word: "Pato", emoji: "🦆" },
+      { letter: "Q", word: "Queijo", emoji: "🧀" },
+      { letter: "R", word: "Rato", emoji: "🐭" },
+      { letter: "S", word: "Sol", emoji: "☀️" },
+      { letter: "T", word: "Tigre", emoji: "🐯" },
+      { letter: "U", word: "Urso", emoji: "🐻" },
+      { letter: "V", word: "Vaca", emoji: "🐮" },
+      { letter: "W", word: "Waffle", emoji: "🧇" },
+      { letter: "X", word: "Xícara", emoji: "☕" },
+      { letter: "Y", word: "Yôga", emoji: "🧘" },
+      { letter: "Z", word: "Zebra", emoji: "🦓" }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+    const totalQuestions = questions.length;
+
+    const startScreen = document.getElementById("startScreen");
+    const quizScreen = document.getElementById("quizScreen");
+    const welcomeMessage = document.getElementById("welcomeMessage");
+    const questionContainer = document.getElementById("questionContainer");
+    const feedback = document.getElementById("feedback");
+    const nextButton = document.getElementById("nextButton");
+    const scoreDisplay = document.getElementById("scoreDisplay");
+    const startButton = document.getElementById("startButton");
+
+    // Inicia a atividade após o estudante digitar o nome.
+    startButton.addEventListener("click", function () {
+      const nome = document.getElementById("nome").value;
+      if (!nome) {
+        alert("Por favor, digite seu nome para iniciar a atividade.");
+        return;
+      }
+      welcomeMessage.innerHTML = `<h2>Bem-vindo(a), ${nome}!</h2>`;
+      startScreen.style.display = "none";
+      quizScreen.style.display = "block";
+      loadQuestion();
+    });
+
+    // Função para embaralhar um array
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    // Gera as alternativas de resposta (a correta e três distratoras)
+    function getAnswerOptions(correctLetter) {
+      const allLetters = questions.map(q => q.letter);
+      const otherLetters = allLetters.filter(letter => letter !== correctLetter);
+      const distractors = shuffleArray(otherLetters).slice(0, 3);
+      let options = [correctLetter, ...distractors];
+      return shuffleArray(options);
+    }
+
+    // Carrega a pergunta atual
+    function loadQuestion() {
+      feedback.innerHTML = "";
+      nextButton.style.display = "none";
+      questionContainer.innerHTML = "";
+      if (currentQuestionIndex >= totalQuestions) {
+        // Fim do quiz – exibe a pontuação final.
+        questionContainer.innerHTML = `<h2>Atividade Finalizada!</h2>
+          <p>Sua pontuação final é: ${score} de ${totalQuestions * 10}</p>`;
+        nextButton.style.display = "none";
+        return;
+      }
+      
+      const currentQuestion = questions[currentQuestionIndex];
+      const options = getAnswerOptions(currentQuestion.letter);
+
+      let html = `<h3>Pergunta ${currentQuestionIndex + 1} de ${totalQuestions}</h3>`;
+      // Exibe a figura (neste caso, o emoji que representa o objeto)
+      html += `<div style="font-size: 4rem;">${currentQuestion.emoji}</div>`;
+      html += `<p>Ouça com atenção: qual é a letra inicial do nome do objeto exibido na tela?</p>`;
+      // Botão para ouvir a pergunta em voz alta
+      html += `<button id="speakButton" class="speak-button" onclick="speakQuestion()">Ouvir a pergunta</button>`;
+      
+      // Gera os botões das alternativas
+      options.forEach(option => {
+        html += `<button class="option-button" onclick="selectOption(this, '${currentQuestion.letter}')">${option}</button>`;
+      });
+
+      questionContainer.innerHTML = html;
+      scoreDisplay.innerText = "Pontuação: " + score;
+    }
+
+    // Função chamada ao selecionar uma alternativa
+    window.selectOption = function (button, correctLetter) {
+      const buttons = document.querySelectorAll(".option-button");
+      buttons.forEach(btn => {
+        btn.disabled = true;
+      });
+      if (button.innerText === correctLetter) {
+        button.classList.add("correct");
+        feedback.innerHTML = `<p style="color: green; font-weight: bold;">Correto!</p>`;
+        score += 10;
+      } else {
+        button.classList.add("incorrect");
+        feedback.innerHTML = `<p style="color: red; font-weight: bold;">Incorreto! A resposta correta é ${correctLetter}.</p>`;
+        buttons.forEach(btn => {
+          if (btn.innerText === correctLetter) {
+            btn.classList.add("correct");
+          }
+        });
+      }
+      scoreDisplay.innerText = "Pontuação: " + score;
+      nextButton.style.display = "inline-block";
+    };
+
+    // Avança para a próxima pergunta
+    nextButton.addEventListener("click", function () {
+      currentQuestionIndex++;
+      loadQuestion();
+    });
+
+    // Função que utiliza a Web Speech API para ler a pergunta em voz alta.
+    function speakQuestion() {
+      const textToSpeak = "Ouça com atenção: qual é a letra inicial do nome do objeto exibido na tela?";
+      const utterance = new SpeechSynthesisUtterance(textToSpeak);
+      utterance.lang = "pt-BR";
+      speechSynthesis.speak(utterance);
+    }
+  </script>
+</body>
+</html>
