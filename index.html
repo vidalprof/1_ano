@@ -197,7 +197,7 @@
       let html = `<h3>Pergunta ${currentQuestionIndex + 1} de ${totalQuestions}</h3>`;
       // Exibe a figura (neste caso, o emoji que representa o objeto)
       html += `<div style="font-size: 4rem;">${currentQuestion.emoji}</div>`;
-      html += `<p>Qual é a letra inicial do objeto mostrado na imagem?</p>`;
+      html += `<p>Ouça com atenção: qual é a letra inicial do nome do objeto exibido na tela?</p>`;
       // Botão para ouvir a pergunta em voz alta
       html += `<button id="speakButton" class="speak-button" onclick="speakQuestion()">Ouvir a pergunta</button>`;
       
@@ -241,7 +241,7 @@
 
     // Função que utiliza a Web Speech API para ler a pergunta em voz alta.
     function speakQuestion() {
-      const textToSpeak = "Qual é a letra inicial do objeto mostrado na imagem?";
+      const textToSpeak = "Ouça com atenção: qual é a letra inicial do nome do objeto exibido na tela?";
       const utterance = new SpeechSynthesisUtterance(textToSpeak);
       utterance.lang = "pt-BR";
       speechSynthesis.speak(utterance);
