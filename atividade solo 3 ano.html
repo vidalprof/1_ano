@@ -1,0 +1,222 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8" />
+<title>Atividades Interativas: Solo - 3º Ano</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 700px; margin: auto; padding: 20px; background: #f9f9f9; }
+  h1, h2 { color: #2a7ae2; }
+  section { background: white; padding: 15px; margin-bottom: 25px; border-radius: 8px; box-shadow: 0 0 6px #aaa; }
+  button { background-color: #2a7ae2; color: white; border: none; padding: 10px 15px; margin-top: 10px; border-radius: 5px; cursor: pointer; }
+  button:hover { background-color: #1d5bbf; }
+  label { display: block; margin: 8px 0; cursor: pointer; }
+  .feedback { margin-top: 10px; font-weight: bold; }
+  .drag-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+  .drag-item, .drop-zone {
+    border: 2px dashed #ccc;
+    padding: 10px;
+    border-radius: 6px;
+    min-width: 110px;
+    text-align: center;
+    background: white;
+    user-select: none;
+  }
+  .drag-item { cursor: grab; background: #e3e7ff; }
+  .drop-zone { min-height: 40px; }
+  .correct { background-color: #c7f0c7 !important; border-color: #4caf50 !important; }
+  .wrong { background-color: #f8d7da !important; border-color: #dc3545 !important; }
+  textarea { width: 100%; height: 80px; margin-top: 8px; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<h1>Atividades sobre o Solo</h1>
+
+<section>
+  <h2>Leitura</h2>
+  <p>
+    O solo é a camada de terra que fica em cima da terra firme onde vivemos. Ele é muito importante para a vida na Terra porque é nele que crescem as plantas, que fornecem alimentos para os animais e para as pessoas.
+  </p>
+  <p>
+    O solo é formado por pedacinhos de pedras muito pequenos, restos de plantas e animais que se decomporam, água e ar. Esses componentes ajudam as plantas a crescerem fortes e saudáveis.
+  </p>
+  <p>
+    Existem diferentes tipos de solo. O solo arenoso tem muitos grãos de areia e é mais soltinho. O solo argiloso é mais pesado e grudado. E o solo fértil é aquele que tem muitos nutrientes, que são como vitaminas para as plantas, ajudando elas a crescerem bem.
+  </p>
+  <p>
+    No solo vivem muitos bichinhos importantes, como as minhocas, que ajudam a deixar a terra fofinha, facilitando o crescimento das raízes das plantas.
+  </p>
+  <p>
+    Cuidar do solo é muito importante. Devemos evitar jogar lixo na terra, proteger as árvores e as plantas, e evitar desmatamentos, para que o solo continue saudável e possa continuar ajudando a natureza.
+  </p>
+</section>
+
+<section>
+  <h2>Perguntas de Múltipla Escolha</h2>
+  <form id="form-mc">
+    <label>1. De que é formado o solo?
+      <select name="q1" required>
+        <option value="">--Escolha--</option>
+        <option value="correto">Pedacinhos de pedras, restos de plantas e animais, água e ar</option>
+        <option value="errado">Só areia</option>
+        <option value="errado">Só água e pedras</option>
+      </select>
+    </label>
+    <label>2. Qual solo é mais soltinho e tem muita areia?
+      <select name="q2" required>
+        <option value="">--Escolha--</option>
+        <option value="errado">Solo argiloso</option>
+        <option value="correto">Solo arenoso</option>
+        <option value="errado">Solo fértil</option>
+      </select>
+    </label>
+    <button type="button" onclick="verificarMC()">Verificar Respostas</button>
+    <div class="feedback" id="feedback-mc"></div>
+  </form>
+</section>
+
+<section>
+  <h2>Verdadeiro ou Falso</h2>
+  <form id="form-vf">
+    <label><input type="radio" name="vf1" value="V" required> O solo fértil tem muitos nutrientes que ajudam as plantas a crescerem.</label>
+    <label><input type="radio" name="vf1" value="F" required> O solo fértil não ajuda as plantas a crescerem.</label>
+    <label><input type="radio" name="vf2" value="V" required> Minhocas ajudam a deixar o solo fofinho.</label>
+    <label><input type="radio" name="vf2" value="F" required> Minhocas estragam o solo.</label>
+    <button type="button" onclick="verificarVF()">Verificar Respostas</button>
+    <div class="feedback" id="feedback-vf"></div>
+  </form>
+</section>
+
+<section>
+  <h2>Jogo de Associação (Arraste e Solte)</h2>
+  <p>Arraste as palavras para o local correto:</p>
+  <div>
+    <div style="display:flex; gap:20px; flex-wrap:wrap;">
+      <div>
+        <h4>Palavras</h4>
+        <div id="palavras" class="drag-container">
+          <div draggable="true" class="drag-item" id="item1">Minhoca</div>
+          <div draggable="true" class="drag-item" id="item2">Areia</div>
+          <div draggable="true" class="drag-item" id="item3">Nutrientes</div>
+          <div draggable="true" class="drag-item" id="item4">Lixo</div>
+        </div>
+      </div>
+      <div>
+        <h4>Significado</h4>
+        <div class="drop-zone" data-accept="item1" id="dz1">Ajuda o solo a ficar fofinho</div>
+        <div class="drop-zone" data-accept="item2" id="dz2">Solo soltinho com grãos</div>
+        <div class="drop-zone" data-accept="item3" id="dz3">Vitaminas que ajudam as plantas</div>
+        <div class="drop-zone" data-accept="item4" id="dz4">Não devemos jogar aqui</div>
+      </div>
+    </div>
+  </div>
+  <button type="button" onclick="verificarAssociacao()">Verificar Associação</button>
+  <div class="feedback" id="feedback-assoc"></div>
+</section>
+
+<section>
+  <h2>Escreva ou Desenhe sobre o Solo</h2>
+  <p>Conte com suas palavras o que aprendeu sobre o solo:</p>
+  <textarea id="texto-solo" placeholder="Escreva aqui..."></textarea>
+  <button type="button" onclick="mostrarTexto()">Enviar</button>
+  <div class="feedback" id="feedback-texto"></div>
+</section>
+
+<script>
+  // Múltipla Escolha
+  function verificarMC() {
+    const form = document.getElementById('form-mc');
+    let corretas = 0;
+    let total = 2;
+    const feedback = document.getElementById('feedback-mc');
+    for(let i=1; i<=total; i++) {
+      const resposta = form['q'+i].value;
+      if(resposta === 'correto') corretas++;
+    }
+    feedback.textContent = `Você acertou ${corretas} de ${total} perguntas.`;
+  }
+
+  // Verdadeiro ou Falso
+  function verificarVF() {
+    const form = document.getElementById('form-vf');
+    let corretas = 0;
+    const feedback = document.getElementById('feedback-vf');
+
+    const respostas = {
+      vf1: 'V',
+      vf2: 'V'
+    };
+    for(let key in respostas) {
+      const radios = form[key];
+      let selecionado = [...radios].find(r => r.checked);
+      if(selecionado && selecionado.value === respostas[key]) {
+        corretas++;
+      }
+    }
+    feedback.textContent = `Você acertou ${corretas} de 2 perguntas.`;
+  }
+
+  // Drag and Drop
+  const draggables = document.querySelectorAll('.drag-item');
+  const dropzones = document.querySelectorAll('.drop-zone');
+  draggables.forEach(item => {
+    item.addEventListener('dragstart', dragStart);
+  });
+  dropzones.forEach(zone => {
+    zone.addEventListener('dragover', dragOver);
+    zone.addEventListener('drop', dropItem);
+  });
+
+  let draggedItem = null;
+  function dragStart(e) {
+    draggedItem = e.target;
+    e.dataTransfer.setData('text/plain', e.target.id);
+  }
+  function dragOver(e) {
+    e.preventDefault();
+  }
+  function dropItem(e) {
+    e.preventDefault();
+    const id = e.dataTransfer.getData('text/plain');
+    const dragged = document.getElementById(id);
+    if (e.target.classList.contains('drop-zone') && e.target.childElementCount === 0) {
+      e.target.appendChild(dragged);
+    }
+  }
+
+  function verificarAssociacao() {
+    let corretas = 0;
+    dropzones.forEach(zone => {
+      if(zone.childElementCount > 0) {
+        const dragId = zone.firstElementChild.id;
+        if(zone.getAttribute('data-accept') === dragId) {
+          zone.classList.add('correct');
+          zone.classList.remove('wrong');
+          corretas++;
+        } else {
+          zone.classList.add('wrong');
+          zone.classList.remove('correct');
+        }
+      } else {
+        zone.classList.remove('correct', 'wrong');
+      }
+    });
+    const feedback = document.getElementById('feedback-assoc');
+    feedback.textContent = `Você acertou ${corretas} de 4 associações.`;
+  }
+
+  // Texto livre
+  function mostrarTexto() {
+    const texto = document.getElementById('texto-solo').value.trim();
+    const feedback = document.getElementById('feedback-texto');
+    if(texto.length > 0) {
+      feedback.textContent = "Obrigado por compartilhar!";
+    } else {
+      feedback.textContent = "Por favor, escreva algo sobre o solo.";
+    }
+  }
+</script>
+
+</body>
+</html>
